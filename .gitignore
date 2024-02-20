@@ -2,3 +2,6 @@
 *.env
 logs/*.csv
 secrets.toml
+__pycache__
+*.pyc
+.idea
