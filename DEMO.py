@@ -3,7 +3,7 @@ import csv
 import streamlit as st
 
 from utils.api_requests import get_ai_assistant_response
-from utils.html_chat import st_create_html_chat, st_create_html_info
+from utils.html_chat_tk import st_create_html_chat, st_create_html_info
 from utils.metadata import EXAMPLES_B, LOGS
 from dotenv import load_dotenv
 
@@ -104,7 +104,7 @@ def main(admin=None):
         with chat_img:
             st.image("./img/logo2.jpg", width=200)
         st.markdown("----")
-        show_info = st.checkbox("Отображать вопросы", value=True)
+        show_info = st.checkbox("Отображать похожие вопросы и ответы из базы данных")
         meta_placeholder = st.empty()
 
     with col1:
@@ -147,6 +147,8 @@ def main(admin=None):
                             questions_as_html = "<br>" + "<br>".join([f"🔸 {q}" for q in questions])
                             st.markdown(f"🔗 Релевантные вопросы из датасета: {questions_as_html}",
                                         unsafe_allow_html=True)
+                            if len(questions) == 0:
+                                st.info("База данных не подключена")
 
                 except Exception as e:
                     st.info("Произошла ошибка. Проверьте ваш ключ и попробуйте еще раз.")

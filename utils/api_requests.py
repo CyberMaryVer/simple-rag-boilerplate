@@ -228,7 +228,7 @@ def format_answer_with_openai(
 
 
 def get_ai_assistant_response(user_input, user_id=0, user_key="12345test", metadata_keys=None):
-    metadata_keys = metadata_keys if metadata_keys else ["question", "answer", "entry_idx"]
+    metadata_keys = metadata_keys if metadata_keys else []
     answer, sources, meta = answer_with_openai(user_input, mkeys=metadata_keys)
     return {"answer": answer, "sources": sources, "meta": meta}
 
@@ -237,7 +237,7 @@ if __name__ == '__main__':
     import time
 
     print(OPENAI_API_KEY)
-    # get_context_with_score("Что надо и что не надо маркировать?", verbose=True)
+    get_context_with_score("Что надо и что не надо маркировать?", verbose=True)
     start = time.time()
-    print_openai_answer("Что надо и что не надо маркировать?", verbose=False, metadata_keys=["question", "answer"])
+    print_openai_answer("Что надо и что не надо маркировать?", verbose=False, metadata_keys=[])
     print("\033[093m", time.time() - start, "\033[0m")
