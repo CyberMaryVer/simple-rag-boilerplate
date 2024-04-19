@@ -152,7 +152,7 @@ def main(admin=None):
 
                 except Exception as e:
                     st.info("Произошла ошибка. Проверьте ваш ключ и попробуйте еще раз.")
-                    print(f"\033[091m[ERROR-main]: {e}\033[0m")
+                    st.error(f"\033[091m[ERROR-main]: {e}\033[0m")
                     _log_ai_answer(answer={"answer": str(e)}, user_key=tada_key)
 
             elif submitted and len(user_input) == 0:
