@@ -29,7 +29,7 @@ def get_faiss_index(index_path=None):
     index_path = index_path if index_path else INDEX_PATH
     return FAISS.load_local(folder_path=index_path,
                             embeddings=OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY),
-                            # allow_dangerous_deserialization=True
+                            allow_dangerous_deserialization=True
                             )
 
 
