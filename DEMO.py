@@ -4,6 +4,7 @@ import streamlit as st
 
 from utils.api_requests import get_ai_assistant_response
 from utils.html_chat_tk import st_create_html_chat, st_create_html_info
+from utils.update_sources import enrich_sources
 from utils.metadata import EXAMPLES_B, LOGS
 from dotenv import load_dotenv
 
@@ -131,10 +132,13 @@ def main(admin=None):
                                                            user_id="demo",
                                                            user_key=tada_key,)
                         _log_ai_answer(answer=answer, user_key=tada_key)
-                    print(answer.get("sources"))
+
+                    # Enrich answer with sources
+                    enriched_sources = enrich_sources(answer.get("sources"))
+
                     html = st_create_html_chat(question=user_input,
                                                answer=answer.get("answer"),
-                                               sources=answer.get("sources"),
+                                               sources=enriched_sources,
                                                )
                     st.markdown(html, unsafe_allow_html=True)
                     st_format_ai_answer(answer)
