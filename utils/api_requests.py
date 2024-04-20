@@ -15,6 +15,7 @@ from langchain.vectorstores.faiss import FAISS
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", st.secrets["OPENAI_API_KEY"])
 INDEX_PATH = os.getenv("INDEX_PATH", st.secrets["INDEX_PATH"])
+MODEL = os.getenv("MODEL", st.secrets["MODEL"])
 
 openai.api_key = OPENAI_API_KEY
 
@@ -142,7 +143,7 @@ def print_openai_answer(question, verbose=False, temperature=0.02, metadata_keys
 def answer_with_context(
         question,
         context,
-        model="gpt-3.5-turbo",
+        model=MODEL,
         max_tokens=2400,
         temperature=0.02,
         language="ru",
@@ -174,7 +175,7 @@ def answer_with_context(
 
 def answer_without_context(
         question,
-        model="gpt-3.5-turbo",
+        model=MODEL,
         max_tokens=2800,
 ):
     pretext = "You an expert in the field of business, finance, law, and HR. You are answering questions from a client."
