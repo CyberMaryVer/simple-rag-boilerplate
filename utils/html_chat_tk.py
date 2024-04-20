@@ -18,7 +18,7 @@ def st_create_html_chat(question, answer, sources,
                         user_icon=USER_ICON,
                         chat_icon=CHAT_ICON,
                         info_icon=INFO_ICON,
-                        enhance_text=False):
+                        enhance_text=True):
     answer = _enhance_text(answer) if enhance_text else answer
     html = ""
     html += f"<div style='display: flex; flex-direction: row; justify-content: flex-start; align-items: center;'>" \
