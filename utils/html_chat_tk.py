@@ -11,6 +11,10 @@ def _enhance_text(text):
     text = text.replace(">>", "</b>")
     text = text.replace(" ⧸ ", "/")
     text = text.replace(". - ", "<br> - ")
+    text = text.replace("\n- ", "<br> - ")
+    text = text.replace("\n", "<br>")
+    # replace all occurrences of <br> - with nice bullet points
+    # text = text.replace("<br> - ", "<br>🔸")
     return text
 
 

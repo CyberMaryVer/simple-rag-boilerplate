@@ -105,7 +105,9 @@ def main(admin=None):
         with chat_img:
             st.image("./img/logo2.jpg", width=200)
         st.markdown("----")
-        show_info = st.checkbox("Отображать похожие вопросы и ответы из базы данных")
+        show_info = st.checkbox("Отображать похожие вопросы и ответы из базы данных",
+                                value=True,
+                                disabled=True)
         meta_placeholder = st.empty()
 
     with col1:
@@ -139,6 +141,7 @@ def main(admin=None):
                     html = st_create_html_chat(question=user_input,
                                                answer=answer.get("answer"),
                                                sources=enriched_sources,
+                                               enhance_text=True
                                                )
                     st.markdown(html, unsafe_allow_html=True)
                     st_format_ai_answer(answer)

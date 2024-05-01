@@ -114,16 +114,28 @@ def get_context_with_score(question, threshold=0.33, use_embedding=True, verbose
     return context, sources, metadata_dict
 
 
-def answer_with_openai(question, verbose=False, temperature=0.02, language='ru', context_threshold=0.33, mkeys=None):
+def answer_with_openai(question,
+                       temperature=0.02,
+                       language='ru',
+                       context_threshold=0.33,
+                       mkeys=None,
+                       use_retry=True
+                       ):
     context, sources, meta = get_context_with_score(question, threshold=context_threshold, metadata_keys=mkeys)
-    print(context) if verbose else None
+    # print(context)
     if context != "":
         answer = answer_with_context(question, context, temperature=temperature, language=language)
     else:
         answer = answer_without_context(question)
         sources = {"OpenAI": {"href": "https://chat.openai.com/", "name": "OpenAI GPT-3.5 Turbo w/o context"}}
-    print(answer) if verbose else None
-    print(sources) if verbose else None
+
+    if use_retry and _check_if_answer_is_empty(answer):
+        answer = answer_without_context(question)
+        sources += ["OpenAI", ]
+
+    print(f"\033[093mAnswer: {answer}\033[0m")
+    print(f"\033[090mSources: {sources}\033[0m")
+
     return answer, sources, meta
 
 
@@ -149,7 +161,7 @@ def answer_with_context(
         temperature=0.02,
         language="ru",
 ):
-    pretext = "You an expert in the field of business, finance, law. You are answering questions from a client."
+    pretext = "You an expert in the field of Russian labour law. You are answering questions from a client."
     addition = "IN CASE THERE IS NO ANSWER: If context does not contain enough information for answer, " \
                "write 'Not enough information in the context'"
     task = "TASK: Answer the question using the context below. Give your best guess. Be specific and use bullet points"
@@ -229,6 +241,17 @@ def format_answer_with_openai(
     except Exception as e:
         print("[ERROR-format_answer_with_openai]", e)
         return ""
+
+
+def _check_if_answer_is_empty(answer):
+    """Check if the answer is empty or contains key phrases, like 'not enough information' in EN or RU"""
+    if len(answer) < 10:
+        return True
+    if "недостаточно информации" in answer.lower():
+        return True
+    if "not enough information" in answer.lower():
+        return True
+    return False
 
 
 def get_ai_assistant_response(user_input, user_id=0, user_key="12345test", metadata_keys=None):

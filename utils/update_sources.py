@@ -38,6 +38,11 @@ def add_tk_sources(list_of_sources, tk_data_path=TK_DATA_PATH, verbose=False):
         df = pd.read_csv(tk_data_path, index_col=2)
         list_of_sources_updated = {}
         for s in list_of_sources:
+            if s == 'OpenAI':
+                list_of_sources_updated[s] = {'href': 'https://chat.openai.com/',
+                                              'name': 'OpenAI GPT-3.5 Turbo w/o context'}
+                print(f"Skipping {s}...")
+                continue
             s = 'ст.' + s.split('ст.')[1]
             if s in df.index:
                 s_data = df.loc[s, ['href', 'name']]
@@ -86,17 +91,17 @@ def add_yt_sources(list_of_sources, verbose=False):
 
 
 def enrich_sources(list_of_sources, topic="tk", verbose=False):
-    print(f"Enriching sources for topic {topic}...")
+    print(f"Enriching sources for topic {topic}...") if verbose else None
     if topic not in ['tk', 'yt']:
-        print(f"Unknown topic {topic}. Returning original list of sources.")
+        print(f"Unknown topic {topic}. Returning original list of sources.") if verbose else None
         return list_of_sources
     elif topic == 'tk':
         tk_enriched = add_tk_sources(list_of_sources, verbose=verbose)
-        print(f"Enriched sources: {tk_enriched}")
+        print(f"Enriched sources: {tk_enriched}") if verbose else None
         return tk_enriched
     elif topic == 'yt':
         yt_enriched = add_yt_sources(list_of_sources, verbose=verbose)
-        print(f"Enriched sources: {yt_enriched}")
+        print(f"Enriched sources: {yt_enriched}") if verbose else None
         return yt_enriched
 
 
