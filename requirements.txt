@@ -11,4 +11,5 @@ python-dotenv
 # RAG & LLM
 faiss-cpu
 langchain_openai
+langchain-community
 langchain
